@@ -1,6 +1,5 @@
 package com.s360.chatbot.controller;
 
-import org.apache.log4j.Logger;
 import org.apache.poi.ss.usermodel.Workbook;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -15,29 +14,28 @@ import com.s360.chatbot.rest.client.TataSkyChatBotRestClient;
 @RequestMapping("/tatasky")
 public class TataSkyChatBotController {
 	
-	private static final Logger LOG = Logger.getLogger(TataSkyChatBotController.class);
+	//private static final Logger LOG = Logger.getLogger(TataSkyChatBotController.class);
 	@Autowired
 	TataSkyChatBotRestClient tataSkyChatBotRestClient;
 	
 	@RequestMapping("/")
-	public ModelAndView chatbot() {
-		ModelAndView mv = new ModelAndView("tataskychatbot");
+	public ModelAndView chatbot(@RequestParam(value = "user", required = false, defaultValue = "user") String user) {
+		ModelAndView mv = new ModelAndView("tatasky");
+		mv.addObject("message", user);
 		return mv;
 	}
 	@RequestMapping(value="/reply")
 	@ResponseBody
-	public Object reply(@RequestParam(value = "user", required = false, defaultValue = "s360") String name,
+	public Object reply(@RequestParam(value = "user", required = false, defaultValue = "user") String name,
 			@RequestParam(value = "option", required = false, defaultValue = "0") Long option) {
-		LOG.debug("inside TataSkyChatBotController::reply()");
-		LOG.info("inside TataSkyChatBotController::reply()");
-		LOG.error("inside TataSkyChatBotController::reply()");
+		//LOG.info("inside TataSkyChatBotController::reply()");
 		return tataSkyChatBotRestClient.getReply(name,option);
 	}
 	
 	@RequestMapping(value="/download")
 	@ResponseBody
 	public Workbook download() {
-		LOG.debug("inside TataSkyChatBotController::download()");
+		//LOG.debug("inside TataSkyChatBotController::download()");
 		return tataSkyChatBotRestClient.download();
 	}
 }
